@@ -15,6 +15,34 @@
     <link rel="icon" href="./img/icon.png">
 </head>
 <body>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var inputName = document.getElementById("insertName");
+	var inputDesc = document.getElementById("insertDesc"); 
+    
+	inputDesc.addEventListener("input", function(event) {
+        var inputValue = event.target.value;
+        var sanitizedValue = sanitizeInput(inputValue);
+        event.target.value = sanitizedValue;
+    });
+	
+    inputName.addEventListener("input", function(event) {
+        var inputValue = event.target.value;
+        var sanitizedValue = sanitizeInput(inputValue);
+        event.target.value = sanitizedValue;
+    });
+
+    function sanitizeInput(inputValue) {
+        // Lista dei simboli da bloccare
+        var forbiddenSymbols = /[<>!@#\$%^&*()_+={}\[\]:;"'|\\\/?]/g;
+
+        // Rimuovi i simboli indesiderati dall'input
+        var sanitizedValue = inputValue.replace(forbiddenSymbols, "");
+
+        return sanitizedValue;
+    }
+});
+</script>
 	<div class="header">
 		<jsp:include page="header.jsp"/>
 	</div>
@@ -27,7 +55,7 @@
 			<div class="user-details">
 				<div class="input-box">
 					<span class="details">Nome prodotto</span>
-					<input type="text" name="nome" maxlength="50" placeholder="Inserire nome prodotto" autofocus required/>
+					<input id="insertName" type="text" name="nome" maxlength="50" placeholder="Inserire nome prodotto" autofocus required/>
 				</div>
 				<div class="input-box">
 					<span class="details">Prezzo</span>
@@ -60,7 +88,7 @@
 				</div>
 				<div class="input-box">
 					<span class="details">Descrizione</span>
-					<textarea id="descrizione" name="descrizione" rows="4" cols="60" style="resize: none; width: 450px; height: 80px" required></textarea> <!-- 93 -->
+					<textarea id="insertDesc" name="descrizione" rows="4" cols="60" style="resize: none; width: 450px; height: 80px" required></textarea> <!-- 93 -->
 				</div>
 			</div>
 			<div class="button">
