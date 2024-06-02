@@ -2,7 +2,9 @@ package control;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -99,18 +101,20 @@ public class Login extends HttpServlet {
 	}
 		
 	private String checkPsw(String psw) {
-		MessageDigest md = null;
 		try {
-			md = MessageDigest.getInstance("MD5");
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		byte[] messageDigest = md.digest(psw.getBytes());
-		BigInteger number = new BigInteger(1, messageDigest);
-		String hashtext = number.toString(16);
-		
-		return hashtext;
-	}
+            // Creare un'istanza di MessageDigest con SHA-512
+            MessageDigest md = MessageDigest.getInstance("SHA-512");
+            
+            // Calcolare l'hash
+            byte[] hashedBytes = md.digest(psw.getBytes(StandardCharsets.UTF_8));
+            
+            // Convertire i byte hash in una rappresentazione esadecimale
+            BigInteger no = new BigInteger(1, hashedBytes);
+            StringBuilder hashText = new StringBuilder(no.toString(16));
+            return hashText.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
 
+	}
 }
